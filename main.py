@@ -1,153 +1,95 @@
+import pandas as pd
 import numpy as np
 
-print("1. Найти индексы ненулевых элементов в заданном массиве")
-array1 = np.array([
-    [1, 2, 0],
-    [0, 5, 6],
-    [7, 8, 0]
-])
-# print(np.where(array1 != 0))
-print(np.nonzero(array1))
+# 1
+# s = pd.Series(np.linspace(0, 20, 15))
+# s1 = s / s.shift(1)
+# result = s1[s1 <= 1.5].mean()
+# print(result)
 
-print("2. Создать nxn единичную матрицу.")
-n = 3
-# print(np.eye(n))
-print(np.identity(3))
+# 2
+# s = pd.Series(data=['1', 2, 3.1, 'hi!', 5, -512, 12.42, 'sber', 10.10, 98],
+#               index=range(6, 26, 2))
+# s_new = pd.Series(data=s.values, index=range(2, 12))
+# result_sum = s_new.iloc[2] + s_new.iloc[4]
+# print(result_sum)
+# only_digits = [x for x in s if type(x) == int]
+# dispersia = np.var(only_digits)
+# print(round(dispersia, 2))
 
-print("3. Создать массив nxnxn со случайными значениями")
-random = np.random.default_rng()
-array2 = random.integers(low=1, high=5, size=(n, n, n))
-print(array2)
+# 3
+# np.random.seed(242)
+# s = pd.Series(np.random.normal(size=100))
+# s = s ** 3
+# s.index = s.index * 3
+# result_sum = s[(s < 2.6) & (s.index % 2 != 0)].sum()
+# negative_count = (s < 0).sum()
+# print(result_sum)
+# print(negative_count)
 
-print("4. Создать вектор (одномерный массив) размера n, заполненный нулями")
-vector_size = 5
-vector = np.zeros(vector_size)
-print(vector)
+# 4
+# tr_type = pd.read_csv("data/tr_types.csv", sep=";")
+# sample = tr_type.sample(n=100, random_state=242)
+# share = (sample["tr_description"]
+#          .str.lower()
+#          .str.contains("плата")
+#          .mean())
+# print(round(share, 2))
 
-print("5. Создать вектор размера 1n, заполненный нулями, но пятый элемент равен 1")
-vector1 = np.zeros(vector_size)
-vector1[4] = 1
-print(vector1)
+# 5
+# transactions = pd.read_csv("data/transactions.csv")
+# top = transactions["tr_type"].value_counts()
+# print(top.head(5))
 
-print("6. Создать вектор со значениями от n до m")
-vector2 = np.arange(0, 5)  # exclusive
-print(vector2)
+# 6
+# transactions = pd.read_csv("data/transactions.csv")
+# transactions = transactions.set_index("customer_id")
+# max_amount = transactions["amount"].max()
+# customer_max = transactions["amount"].idxmax()
+# print(customer_max, max_amount)
 
-print("7. Развернуть одномерный массив (первый становится последним)")
-array3 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-print(array3[::-1])
+# 7
+# transactions = pd.read_csv("data/transactions.csv", nrows=1000000)
+# tr_mcc_codes = pd.read_csv("data/tr_mcc_codes.csv", sep=";")
+# tr_types = pd.read_csv("data/tr_types.csv", sep=";")
+# gender_train = pd.read_csv("data/gender_train.csv")
+#
+# transactions = transactions.merge(tr_mcc_codes, on="mcc_code", how="inner")
+# transactions = transactions.merge(tr_types, on="tr_type", how="inner")
+# transactions = transactions.merge(gender_train, on="customer_id", how="left")
+# print(len(transactions))
 
-print("8. Создать матрицу с 0 внутри, и 1 на границах")
-matrix = np.zeros((5, 5))
-matrix[0, :] = 1
-matrix[-1, :] = 1
-matrix[:, 0] = 1
-matrix[:, -1] = 1
-print(matrix)
+# 8
+# transactions = pd.read_csv("data/transactions.csv")
+# tr_mcc_codes = pd.read_csv("data/tr_mcc_codes.csv", sep=";")
+# tr_types = pd.read_csv("data/tr_types.csv", sep=";")
+# gender_train = pd.read_csv("data/gender_train.csv")
+#
+# transactions = transactions.merge(tr_mcc_codes, on="mcc_code", how="inner")
+# transactions = transactions.merge(tr_types, on="tr_type", how="inner")
+# transactions = transactions.merge(gender_train, on="customer_id", how="left")
+#
+# spends = transactions[transactions["amount"] < 0]
+# groups_by_gender = spends.groupby("gender")["amount"].mean()
+#
+# women = groups_by_gender.iloc[0]
+# men = groups_by_gender.iloc[1]
+#
+# diff = abs(men - women)
+# print(round(diff, 2))
 
-print("9. Создать nxn матрицу и заполнить её в шахматном порядке")
-chess_matrix = np.zeros((5, 5))
-chess_matrix[::2, ::2] = 1
-chess_matrix[1::2, 1::2] = 1
-print(chess_matrix)
+# 9
+transactions = pd.read_csv("data/transactions.csv")
+tr_mcc_codes = pd.read_csv("data/tr_mcc_codes.csv", sep=";")
+tr_types = pd.read_csv("data/tr_types.csv", sep=";")
+gender_train = pd.read_csv("data/gender_train.csv")
 
-print("10. Заменить максимальный элемент на ноль")
-array4 = np.array([1, 2, 5, 10, 2, 43, 53, 100, 23, 43])
-array4[np.argmax(array4)] = 0
-print(array4)
+transactions = transactions.merge(tr_mcc_codes, on="mcc_code", how="inner")
+transactions = transactions.merge(tr_types, on="tr_type", how="inner")
+transactions = transactions.merge(gender_train, on="customer_id", how="left")
 
-print("11. Найти ближайшее к заданному значению число в заданном массиве")
-array5 = np.array([1, 2, 3, 5, 6, 7])
-value = 3.6
-nearest_val_index = np.abs(array5 - value).argmin()
-print(array5[nearest_val_index])
-
-print("12. Дан четырехмерный массив, посчитать сумму по последним двум осям")
-array6 = np.array([
-    [
-        [
-            [1, 2],
-            [3, 4]
-        ],
-        [
-            [5, 6],
-            [7, 8]
-        ]
-    ],
-
-    [
-        [
-            [9, 10],
-            [11, 12]
-        ],
-        [
-            [13, 14],
-            [15, 16]
-        ]
-    ]
-])
-print(np.sum(array6, axis=(2, 3)))
-
-print("13. Определить, есть ли в двумерном массиве нулевые столбцы")
-array7 = np.array([
-    [1, 2, 0],
-    [0, 5, 0],
-    [7, 8, 0]
-])
-print(np.all(array7 == 0, axis=0))
-
-print("14. Отнять среднее из каждой строки в матрице")
-array8 = np.array([
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-])
-row_means = array8.mean(axis=1, keepdims=True)  # иначе сделает [2. 5. 8.]
-print(row_means)
-result = array8 - row_means  # тут бродкастинг будет работать
-print(result)
-
-print("15. Создайте вектор с элементами от 10 до 50")
-vector3 = np.arange(10, 51)
-print(vector3)
-
-print("16. Создайте матрицу (5, 5), заполненую от 0 до 6")
-matrix1 = random.integers(0, 7, size=(5, 5))
-print(matrix1)
-
-print("17. Умножьте матрицу размерности (5, 3) на (3, 2)")
-matrixA = random.integers(low=1, high=11, size=(5, 3))
-matrixB = random.integers(low=1, high=11, size=(3, 2))
-print(matrixA)
-print(matrixB)
-print(f"Result: {matrixA @ matrixB}")
-
-print("18. Создайте матрицу (10, 10) так, чтобы на границе были 0, а внтури 1")
-matrix2 = np.ones((10, 10))
-matrix2[0, :] = 0
-matrix2[-1, :] = 0
-matrix2[:, 0] = 0
-matrix2[:, -1] = 0
-print(matrix2)
-
-print("19. Для заданного числа найдите ближайший к нему элемент в векторе")
-array9 = np.array([3, 17, 42, 88])
-target = 50
-index = np.abs(array9 - target).argmin()
-print(array9[index])
-
-print("""
-20. Дан трёхмерный массив "Цветное изображение", содержащий изображение, размера (height, width, numChannels),
-    а также вектор коэффициентов длины numChannels.
-    Сложить каналы изображения с указанными весами, и вернуть результат в виде матрицы размера (height, width).
-    Реальное изображение не считываем, заполняем трехмерный массив случайными значениями. 
-    Преобразуйте цветное изображение в оттенки серого, использовав коэффициенты np.array([0.299, 0.587, 0.114]).
-   """)
-height = 100
-width = 120
-numChannels = 3
-
-image = random.integers(0, 256, size=(height, width, numChannels))
-gray_cof = np.array([0.299, 0.587, 0.114])
-gray = image @ gray_cof
-print(gray.shape)
+transactions["mcc_code_tr_type"] = (
+    transactions["mcc_code"].astype(str) + "_" + transactions["tr_type"].astype(str)
+)
+transactions_negative = transactions[transactions["amount"] < 0]
+print(transactions_negative)
